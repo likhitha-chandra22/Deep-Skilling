@@ -1,0 +1,119 @@
+# SOLID Principles
+
+Why SOLID Principles?
+
+SOLID principles are used to develop software that is easy to understand, maintain, and extend. They help developers write clean and efficient code by reducing unnecessary complexity.
+
+1. S - Single Responsibility Principle (SRP)
+
+A class should perform only one specific task and should have only one reason for modification.
+
+Example:
+
+In a library management system:
+
+* BookManager handles book-related operations.
+* UserManager handles user-related operations.
+
+Each class focuses on its own responsibility.
+
+Benefit:
+
+* Easier maintenance
+* Better code organization
+* Simplifies debugging
+
+2. O - Open/Closed Principle (OCP)
+
+Software entities should be open for extension but closed for modification.
+
+Instead of changing existing code, new functionality should be added by extending it.
+
+Example:
+
+Consider a Shape class.
+
+To support new shapes like Circle, Rectangle, or Triangle, create separate classes instead of modifying existing code every time.
+
+Benefit:
+
+* Existing code remains stable
+* Lower risk of introducing bugs
+* Easier feature enhancements
+
+3. L - Liskov Substitution Principle (LSP)
+
+A derived class should be able to replace its parent class without affecting the expected behavior of the program.
+
+Example:
+
+Suppose we have a Vehicle class with a startEngine() method.
+
+A Car can use this method properly, but a Bicycle cannot because bicycles do not have engines.
+
+Making Bicycle inherit from Vehicle would violate LSP.
+
+Benefit:
+
+* Proper use of inheritance
+* Improves reliability of code
+* Prevents unexpected behavior
+
+4. I - Interface Segregation Principle (ISP)
+
+A class should not be forced to implement methods that it does not need.
+
+Large interfaces should be divided into smaller and more specific interfaces.
+
+Example:
+
+A SmartDevice interface contains:
+
+* print()
+* scan()
+* fax()
+
+A printer may only need print(), so separate interfaces such as Printable, Scannable, and Faxable can be created.
+
+Benefit:
+
+* Avoids unnecessary implementations
+* Improves flexibility
+* Makes code easier to manage
+
+5. D - Dependency Inversion Principle (DIP)
+
+High-level modules should depend on abstractions rather than concrete implementations.
+
+This reduces dependency between components.
+
+Example:
+
+An OrderService depends on a Payment interface.
+
+Payment methods can be:
+
+* CreditCardPayment
+* UpiPayment
+* NetBankingPayment
+
+New payment methods can be added without modifying OrderService.
+
+Benefit:
+
+* Loose coupling
+* Better flexibility
+* Easier testing and maintenance
+
+---
+Conclusion
+
+SOLID principles help developers build high-quality software by:
+
+* Reducing code complexity
+* Improving maintainability
+* Increasing flexibility
+* Minimizing bugs
+* Supporting scalability
+
+By following SOLID principles, software becomes easier to develop, test, and enhance in the future.
