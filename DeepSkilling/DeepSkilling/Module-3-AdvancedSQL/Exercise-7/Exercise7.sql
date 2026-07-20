@@ -8,53 +8,53 @@ GO
 
 ---------------------------------------------------------
 -- Exercise 1
--- Employee Cursor
+-- Book Cursor
 ---------------------------------------------------------
 
 DECLARE
-    @EmpID INT,
-    @EmpName VARCHAR(100),
-    @DeptID INT,
-    @EmpSalary DECIMAL(10,2);
+    @BookID INT,
+    @BookTitle VARCHAR(100),
+    @Category VARCHAR(50),
+    @Price DECIMAL(10,2);
 
-DECLARE EmployeeDetails CURSOR
+DECLARE BookCursor CURSOR
 FOR
 SELECT
-    EmployeeID,
-    FirstName + ' ' + LastName,
-    DepartmentID,
-    Salary
-FROM Employees;
+    BookID,
+    BookTitle,
+    Category,
+    Price
+FROM Books;
 
-OPEN EmployeeDetails;
+OPEN BookCursor;
 
-FETCH NEXT FROM EmployeeDetails
+FETCH NEXT FROM BookCursor
 INTO
-    @EmpID,
-    @EmpName,
-    @DeptID,
-    @EmpSalary;
+    @BookID,
+    @BookTitle,
+    @Category,
+    @Price;
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
 
     PRINT
-    'ID: ' + CAST(@EmpID AS VARCHAR)
-    + ' | Employee: ' + @EmpName
-    + ' | Dept: ' + CAST(@DeptID AS VARCHAR)
-    + ' | Salary: ' + CAST(@EmpSalary AS VARCHAR);
+    'Book ID: ' + CAST(@BookID AS VARCHAR)
+    + ' | Title: ' + @BookTitle
+    + ' | Category: ' + @Category
+    + ' | Price: ' + CAST(@Price AS VARCHAR);
 
-    FETCH NEXT FROM EmployeeDetails
+    FETCH NEXT FROM BookCursor
     INTO
-        @EmpID,
-        @EmpName,
-        @DeptID,
-        @EmpSalary;
+        @BookID,
+        @BookTitle,
+        @Category,
+        @Price;
 
 END;
 
-CLOSE EmployeeDetails;
-DEALLOCATE EmployeeDetails;
+CLOSE BookCursor;
+DEALLOCATE BookCursor;
 GO
 
 ---------------------------------------------------------
@@ -62,17 +62,17 @@ GO
 -- Static Cursor
 ---------------------------------------------------------
 
-DECLARE EmployeeStatic CURSOR STATIC
+DECLARE BookStatic CURSOR STATIC
 FOR
-SELECT EmployeeID, FirstName
-FROM Employees;
+SELECT BookID, BookTitle
+FROM Books;
 
-OPEN EmployeeStatic;
+OPEN BookStatic;
 
 PRINT 'Static Cursor Opened';
 
-CLOSE EmployeeStatic;
-DEALLOCATE EmployeeStatic;
+CLOSE BookStatic;
+DEALLOCATE BookStatic;
 GO
 
 ---------------------------------------------------------
@@ -80,17 +80,17 @@ GO
 -- Dynamic Cursor
 ---------------------------------------------------------
 
-DECLARE EmployeeDynamic CURSOR DYNAMIC
+DECLARE BookDynamic CURSOR DYNAMIC
 FOR
-SELECT EmployeeID, FirstName
-FROM Employees;
+SELECT BookID, BookTitle
+FROM Books;
 
-OPEN EmployeeDynamic;
+OPEN BookDynamic;
 
 PRINT 'Dynamic Cursor Opened';
 
-CLOSE EmployeeDynamic;
-DEALLOCATE EmployeeDynamic;
+CLOSE BookDynamic;
+DEALLOCATE BookDynamic;
 GO
 
 ---------------------------------------------------------
@@ -98,17 +98,17 @@ GO
 -- Forward Only Cursor
 ---------------------------------------------------------
 
-DECLARE EmployeeForward CURSOR FORWARD_ONLY
+DECLARE BookForward CURSOR FORWARD_ONLY
 FOR
-SELECT EmployeeID, FirstName
-FROM Employees;
+SELECT BookID, BookTitle
+FROM Books;
 
-OPEN EmployeeForward;
+OPEN BookForward;
 
 PRINT 'Forward Only Cursor Opened';
 
-CLOSE EmployeeForward;
-DEALLOCATE EmployeeForward;
+CLOSE BookForward;
+DEALLOCATE BookForward;
 GO
 
 ---------------------------------------------------------
@@ -116,17 +116,17 @@ GO
 -- Keyset Cursor
 ---------------------------------------------------------
 
-DECLARE EmployeeKeyset CURSOR KEYSET
+DECLARE BookKeyset CURSOR KEYSET
 FOR
-SELECT EmployeeID, FirstName
-FROM Employees;
+SELECT BookID, BookTitle
+FROM Books;
 
-OPEN EmployeeKeyset;
+OPEN BookKeyset;
 
 PRINT 'Keyset Cursor Opened';
 
-CLOSE EmployeeKeyset;
-DEALLOCATE EmployeeKeyset;
+CLOSE BookKeyset;
+DEALLOCATE BookKeyset;
 GO
 
 ---------------------------------------------------------
@@ -135,8 +135,8 @@ GO
 
 PRINT 'Cursor Types';
 
-PRINT 'STATIC      - Uses a snapshot of the data';
-PRINT 'DYNAMIC     - Reflects all changes';
-PRINT 'FORWARD ONLY- Allows only forward movement';
-PRINT 'KEYSET      - Fixed keys with updated values';
+PRINT 'STATIC       - Uses a snapshot of the data';
+PRINT 'DYNAMIC      - Reflects all changes';
+PRINT 'FORWARD ONLY - Allows only forward movement';
+PRINT 'KEYSET       - Fixed keys with updated values';
 GO

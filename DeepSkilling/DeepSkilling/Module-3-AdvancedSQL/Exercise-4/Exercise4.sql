@@ -32,7 +32,7 @@ BEGIN
 END;
 GO
 
-EXEC sp_GetBooksByCategory 'Programming';
+EXEC sp_GetBooksByCategory 'Fiction';
 GO
 
 ---------------------------------------------------------
@@ -82,7 +82,7 @@ EXEC sp_InsertBook
     105,
     'Clean Code',
     1,
-    'Programming',
+    'Fiction',
     950;
 
 END;
@@ -113,7 +113,7 @@ BEGIN
 END;
 GO
 
-EXEC sp_GetBooksByCategory 'Programming';
+EXEC sp_GetBooksByCategory 'Fiction';
 GO
 
 ---------------------------------------------------------
@@ -149,7 +149,7 @@ BEGIN
 END;
 GO
 
-EXEC sp_GetBookCount 'Programming';
+EXEC sp_GetBookCount 'Fiction';
 GO
 
 ---------------------------------------------------------
@@ -179,7 +179,7 @@ GO
 DECLARE @Price DECIMAL(12,2);
 
 EXEC sp_GetTotalBookPrice
-    'Programming',
+    'Fiction',
     @Price OUTPUT;
 
 SELECT @Price AS TotalPrice;
@@ -209,6 +209,7 @@ GO
 EXEC sp_UpdateBookPrice
     101,
     700;
+GO
 
 SELECT *
 FROM Books
@@ -237,12 +238,13 @@ END;
 GO
 
 EXEC sp_IncreaseBookPrice
-    'Programming',
+    'Fiction',
     100;
+GO
 
 SELECT *
 FROM Books
-WHERE Category='Programming';
+WHERE Category='Fiction';
 GO
 
 ---------------------------------------------------------
@@ -287,6 +289,7 @@ GO
 EXEC sp_UpdateBookPriceTransaction
     102,
     850;
+GO
 
 SELECT *
 FROM Books
@@ -364,6 +367,7 @@ GO
 EXEC sp_UpdateBookPriceSafe
     103,
     600;
+GO
 
 SELECT *
 FROM Books

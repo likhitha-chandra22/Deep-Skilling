@@ -79,7 +79,7 @@ GO
 ---------------------------------------------------------
 
 SELECT *
-FROM dbo.fn_GetBooksByCategory('Programming');
+FROM dbo.fn_GetBooksByCategory('Fiction');
 GO
 
 ---------------------------------------------------------
@@ -209,11 +209,11 @@ GO
 
 ---------------------------------------------------------
 -- Exercise 8
--- Books in Programming Category
+-- Books in Fiction Category
 ---------------------------------------------------------
 
 SELECT *
-FROM dbo.fn_GetBooksByCategory('Programming');
+FROM dbo.fn_GetBooksByCategory('Fiction');
 GO
 
 ---------------------------------------------------------

@@ -10,24 +10,24 @@ GO
 -- Drop Existing Triggers
 ---------------------------------------------------------
 
-DROP TRIGGER IF EXISTS trg_SalaryAudit;
-DROP TRIGGER IF EXISTS trg_BlockDeleteEmployee;
-DROP TRIGGER IF EXISTS trg_UpdateYearlySalary;
+DROP TRIGGER IF EXISTS trg_BookPriceAudit;
+DROP TRIGGER IF EXISTS trg_BlockDeleteBook;
+DROP TRIGGER IF EXISTS trg_UpdateDiscountPrice;
 GO
 
 ---------------------------------------------------------
 -- Create Audit Table
 ---------------------------------------------------------
 
-DROP TABLE IF EXISTS SalaryAudit;
+DROP TABLE IF EXISTS BookPriceAudit;
 GO
 
-CREATE TABLE SalaryAudit
+CREATE TABLE BookPriceAudit
 (
     AuditID INT IDENTITY(1,1) PRIMARY KEY,
-    EmployeeID INT,
-    PreviousSalary DECIMAL(10,2),
-    UpdatedSalary DECIMAL(10,2),
+    BookID INT,
+    OldPrice DECIMAL(10,2),
+    NewPrice DECIMAL(10,2),
     UpdatedOn DATETIME DEFAULT GETDATE()
 );
 GO
@@ -37,26 +37,29 @@ GO
 -- AFTER UPDATE Trigger
 ---------------------------------------------------------
 
-CREATE TRIGGER trg_SalaryAudit
-ON Employees
+CREATE TRIGGER trg_BookPriceAudit
+ON Books
 AFTER UPDATE
 AS
 BEGIN
 
-    INSERT INTO SalaryAudit
+    INSERT INTO BookPriceAudit
     (
-        EmployeeID,
-        PreviousSalary,
-        UpdatedSalary
+        BookID,
+        OldPrice,
+        NewPrice
     )
+
     SELECT
-        d.EmployeeID,
-        d.Salary,
-        i.Salary
+        d.BookID,
+        d.Price,
+        i.Price
+
     FROM deleted d
     INNER JOIN inserted i
-        ON d.EmployeeID = i.EmployeeID
-    WHERE d.Salary <> i.Salary;
+        ON d.BookID = i.BookID
+
+    WHERE d.Price <> i.Price;
 
 END;
 GO
@@ -65,12 +68,12 @@ GO
 -- Test Trigger
 ---------------------------------------------------------
 
-UPDATE Employees
-SET Salary = 58000
-WHERE EmployeeID = 101;
+UPDATE Books
+SET Price = 650
+WHERE BookID = 101;
 GO
 
-SELECT * FROM SalaryAudit;
+SELECT * FROM BookPriceAudit;
 GO
 
 ---------------------------------------------------------
@@ -78,15 +81,15 @@ GO
 -- INSTEAD OF DELETE Trigger
 ---------------------------------------------------------
 
-CREATE TRIGGER trg_BlockDeleteEmployee
-ON Employees
+CREATE TRIGGER trg_BlockDeleteBook
+ON Books
 INSTEAD OF DELETE
 AS
 BEGIN
 
     RAISERROR
     (
-        'Deleting employee records is not allowed.',
+        'Deleting book records is not allowed.',
         16,
         1
     );
@@ -100,8 +103,8 @@ GO
 
 BEGIN TRY
 
-    DELETE FROM Employees
-    WHERE EmployeeID = 102;
+    DELETE FROM Books
+    WHERE BookID = 102;
 
 END TRY
 
@@ -138,25 +141,27 @@ GO
 -- Modify Trigger
 ---------------------------------------------------------
 
-ALTER TRIGGER trg_SalaryAudit
-ON Employees
+ALTER TRIGGER trg_BookPriceAudit
+ON Books
 AFTER UPDATE
 AS
 BEGIN
 
-    INSERT INTO SalaryAudit
+    INSERT INTO BookPriceAudit
     (
-        EmployeeID,
-        PreviousSalary,
-        UpdatedSalary
+        BookID,
+        OldPrice,
+        NewPrice
     )
+
     SELECT
-        d.EmployeeID,
-        d.Salary,
-        i.Salary
+        d.BookID,
+        d.Price,
+        i.Price
+
     FROM deleted d
     INNER JOIN inserted i
-        ON d.EmployeeID = i.EmployeeID;
+        ON d.BookID = i.BookID;
 
 END;
 GO
@@ -166,7 +171,7 @@ GO
 -- Delete Trigger
 ---------------------------------------------------------
 
-DROP TRIGGER trg_BlockDeleteEmployee;
+DROP TRIGGER trg_BlockDeleteBook;
 GO
 
 ---------------------------------------------------------
@@ -175,37 +180,39 @@ GO
 
 SELECT name
 FROM sys.triggers
-WHERE name = 'trg_BlockDeleteEmployee';
+WHERE name = 'trg_BlockDeleteBook';
 GO
 
 ---------------------------------------------------------
 -- Exercise 6
--- Maintain Yearly Salary
+-- Maintain Discount Price
 ---------------------------------------------------------
 
-IF COL_LENGTH('Employees','YearlySalary') IS NULL
+IF COL_LENGTH('Books','DiscountPrice') IS NULL
 BEGIN
 
-    ALTER TABLE Employees
-    ADD YearlySalary DECIMAL(12,2);
+    ALTER TABLE Books
+    ADD DiscountPrice DECIMAL(10,2);
 
 END;
 GO
 
-DROP TRIGGER IF EXISTS trg_UpdateYearlySalary;
+DROP TRIGGER IF EXISTS trg_UpdateDiscountPrice;
 GO
 
-CREATE TRIGGER trg_UpdateYearlySalary
-ON Employees
+CREATE TRIGGER trg_UpdateDiscountPrice
+ON Books
 AFTER UPDATE
 AS
 BEGIN
 
-    UPDATE E
-    SET YearlySalary = E.Salary * 12
-    FROM Employees E
+    UPDATE B
+
+    SET DiscountPrice = B.Price - (B.Price * 0.10)
+
+    FROM Books B
     INNER JOIN inserted I
-        ON E.EmployeeID = I.EmployeeID;
+        ON B.BookID = I.BookID;
 
 END;
 GO
@@ -214,16 +221,16 @@ GO
 -- Test Trigger
 ---------------------------------------------------------
 
-UPDATE Employees
-SET Salary = 62000
-WHERE EmployeeID = 103;
+UPDATE Books
+SET Price = 750
+WHERE BookID = 103;
 GO
 
 SELECT
-    EmployeeID,
-    FirstName,
-    Salary,
-    YearlySalary
-FROM Employees
-WHERE EmployeeID = 103;
+    BookID,
+    BookTitle,
+    Price,
+    DiscountPrice
+FROM Books
+WHERE BookID = 103;
 GO

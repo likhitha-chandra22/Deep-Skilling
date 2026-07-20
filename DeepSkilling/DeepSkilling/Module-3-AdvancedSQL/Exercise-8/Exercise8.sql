@@ -3,14 +3,30 @@
 -- Exercise 8 - Exception Handling
 -- =====================================================
 
-USE Cognizant_SQL_Exception;
+USE Cognizant_SQL;
+GO
+
+---------------------------------------------------------
+-- Create Audit Log Table
+---------------------------------------------------------
+
+DROP TABLE IF EXISTS AuditLog;
+GO
+
+CREATE TABLE AuditLog
+(
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    Action VARCHAR(100),
+    ErrorMessage VARCHAR(500),
+    LogDate DATETIME DEFAULT GETDATE()
+);
 GO
 
 ---------------------------------------------------------
 -- Drop Existing Procedure
 ---------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS sp_AddNewEmployee;
+DROP PROCEDURE IF EXISTS sp_AddNewBook;
 GO
 
 ---------------------------------------------------------
@@ -18,127 +34,112 @@ GO
 -- TRY...CATCH with Error Logging
 ---------------------------------------------------------
 
-CREATE PROCEDURE sp_AddNewEmployee
+CREATE PROCEDURE sp_AddNewBook
 (
-    @EmployeeID INT,
-    @FirstName VARCHAR(50),
-    @LastName VARCHAR(50),
-    @Email VARCHAR(100),
-    @Salary DECIMAL(10,2),
-    @DepartmentID INT
+    @BookID INT,
+    @BookTitle VARCHAR(100),
+    @AuthorID INT,
+    @Category VARCHAR(50),
+    @Price DECIMAL(10,2)
 )
 AS
 BEGIN
+    BEGIN TRY
 
-BEGIN TRY
+        INSERT INTO Books
+        (
+            BookID,
+            BookTitle,
+            AuthorID,
+            Category,
+            Price
+        )
+        VALUES
+        (
+            @BookID,
+            @BookTitle,
+            @AuthorID,
+            @Category,
+            @Price
+        );
 
-    INSERT INTO Employees
-    (
-        EmployeeID,
-        FirstName,
-        LastName,
-        Email,
-        Salary,
-        DepartmentID
-    )
-    VALUES
-    (
-        @EmployeeID,
-        @FirstName,
-        @LastName,
-        @Email,
-        @Salary,
-        @DepartmentID
-    );
+        PRINT 'Book inserted successfully.';
 
-    PRINT 'Employee record inserted successfully.';
+    END TRY
 
-END TRY
+    BEGIN CATCH
 
-BEGIN CATCH
+        INSERT INTO AuditLog(Action, ErrorMessage)
+        VALUES
+        (
+            'Add Book',
+            ERROR_MESSAGE()
+        );
 
-    INSERT INTO AuditLog
-    (
-        Action,
-        ErrorMessage
-    )
-    VALUES
-    (
-        'Insert Employee',
-        ERROR_MESSAGE()
-    );
+        PRINT 'Error logged successfully.';
 
-    PRINT 'Error information stored.';
-
-END CATCH
-
+    END CATCH
 END;
 GO
 
-EXEC sp_AddNewEmployee
-201,
-'Rahul',
-'Sharma',
-'rahul@gmail.com',
-42000,
-2;
+EXEC sp_AddNewBook
+105,
+'Clean Code',
+1,
+'Programming',
+950;
 GO
 
 ---------------------------------------------------------
 -- Exercise 2
--- THROW Statement
+-- THROW
 ---------------------------------------------------------
 
-ALTER PROCEDURE sp_AddNewEmployee
+ALTER PROCEDURE sp_AddNewBook
 (
-    @EmployeeID INT,
-    @FirstName VARCHAR(50),
-    @LastName VARCHAR(50),
-    @Email VARCHAR(100),
-    @Salary DECIMAL(10,2),
-    @DepartmentID INT
+    @BookID INT,
+    @BookTitle VARCHAR(100),
+    @AuthorID INT,
+    @Category VARCHAR(50),
+    @Price DECIMAL(10,2)
 )
 AS
 BEGIN
+    BEGIN TRY
 
-BEGIN TRY
+        INSERT INTO Books
+        VALUES
+        (
+            @BookID,
+            @BookTitle,
+            @AuthorID,
+            @Category,
+            @Price
+        );
 
-    INSERT INTO Employees
-    VALUES
-    (
-        @EmployeeID,
-        @FirstName,
-        @LastName,
-        @Email,
-        @Salary,
-        @DepartmentID
-    );
+    END TRY
 
-END TRY
+    BEGIN CATCH
 
-BEGIN CATCH
+        INSERT INTO AuditLog(Action, ErrorMessage)
+        VALUES
+        (
+            'THROW Example',
+            ERROR_MESSAGE()
+        );
 
-    INSERT INTO AuditLog
-    VALUES
-    (
-        'THROW Example',
-        ERROR_MESSAGE()
-    );
+        THROW;
 
-    THROW;
-
-END CATCH
-
+    END CATCH
 END;
 GO
 
-EXEC sp_AddNewEmployee
-201,
-'Rahul',
-'Sharma',
-'rahul@gmail.com',
-42000,
-2;
+EXEC sp_AddNewBook
+105,
+'Clean Code',
+1,
+'Programming',
+950;
 GO
 
 ---------------------------------------------------------
@@ -146,68 +147,62 @@ GO
 -- RAISERROR
 ---------------------------------------------------------
 
-ALTER PROCEDURE sp_AddNewEmployee
+ALTER PROCEDURE sp_AddNewBook
 (
-    @EmployeeID INT,
-    @FirstName VARCHAR(50),
-    @LastName VARCHAR(50),
-    @Email VARCHAR(100),
-    @Salary DECIMAL(10,2),
-    @DepartmentID INT
+    @BookID INT,
+    @BookTitle VARCHAR(100),
+    @AuthorID INT,
+    @Category VARCHAR(50),
+    @Price DECIMAL(10,2)
 )
 AS
 BEGIN
 
-IF @Salary <= 0
-BEGIN
+    IF @Price <= 0
+    BEGIN
+        RAISERROR
+        (
+            'Book price must be greater than zero.',
+            16,
+            1
+        );
+        RETURN;
+    END
 
-    RAISERROR
-    (
-        'Salary should be greater than zero.',
-        16,
-        1
-    );
+    BEGIN TRY
 
-    RETURN;
+        INSERT INTO Books
+        VALUES
+        (
+            @BookID,
+            @BookTitle,
+            @AuthorID,
+            @Category,
+            @Price
+        );
 
-END
+    END TRY
 
-BEGIN TRY
+    BEGIN CATCH
 
-    INSERT INTO Employees
-    VALUES
-    (
-        @EmployeeID,
-        @FirstName,
-        @LastName,
-        @Email,
-        @Salary,
-        @DepartmentID
-    );
+        INSERT INTO AuditLog(Action, ErrorMessage)
+        VALUES
+        (
+            'Price Validation',
+            ERROR_MESSAGE()
+        );
 
-END TRY
-
-BEGIN CATCH
-
-    INSERT INTO AuditLog
-    VALUES
-    (
-        'Salary Validation',
-        ERROR_MESSAGE()
-    );
-
-END CATCH
+    END CATCH
 
 END;
 GO
 
-EXEC sp_AddNewEmployee
-202,
-'Ajay',
-'Kumar',
-'ajay@gmail.com',
--500,
-2;
+EXEC sp_AddNewBook
+106,
+'SQL Basics',
+2,
+'Programming',
+-100;
 GO
 
 ---------------------------------------------------------
@@ -215,68 +210,68 @@ GO
 -- Nested TRY...CATCH
 ---------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS sp_ChangeDepartment;
+DROP PROCEDURE IF EXISTS sp_UpdateBookAuthor;
 GO
 
-CREATE PROCEDURE sp_ChangeDepartment
+CREATE PROCEDURE sp_UpdateBookAuthor
 (
-    @EmployeeID INT,
-    @DepartmentID INT
+    @BookID INT,
+    @AuthorID INT
 )
 AS
 BEGIN
 
-BEGIN TRY
-
     BEGIN TRY
 
-        IF NOT EXISTS
-        (
-            SELECT 1
-            FROM Departments
-            WHERE DepartmentID=@DepartmentID
-        )
-        BEGIN
-            RAISERROR
-            (
-                'Invalid Department.',
-                16,
-                1
-            );
-        END
+        BEGIN TRY
 
-        UPDATE Employees
-        SET DepartmentID=@DepartmentID
-        WHERE EmployeeID=@EmployeeID;
+            IF NOT EXISTS
+            (
+                SELECT *
+                FROM Authors
+                WHERE AuthorID=@AuthorID
+            )
+            BEGIN
+                RAISERROR
+                (
+                    'Invalid Author.',
+                    16,
+                    1
+                );
+            END
+
+            UPDATE Books
+            SET AuthorID=@AuthorID
+            WHERE BookID=@BookID;
+
+        END TRY
+
+        BEGIN CATCH
+
+            INSERT INTO AuditLog(Action, ErrorMessage)
+            VALUES
+            (
+                'Update Author',
+                ERROR_MESSAGE()
+            );
+
+            THROW;
+
+        END CATCH
 
     END TRY
 
     BEGIN CATCH
 
-        INSERT INTO AuditLog
-        VALUES
-        (
-            'Department Transfer',
-            ERROR_MESSAGE()
-        );
-
-        THROW;
+        PRINT ERROR_MESSAGE();
 
     END CATCH
-
-END TRY
-
-BEGIN CATCH
-
-    PRINT ERROR_MESSAGE();
-
-END CATCH
 
 END;
 GO
 
-EXEC sp_ChangeDepartment
-201,
+EXEC sp_UpdateBookAuthor
+101,
 99;
 GO
 
@@ -285,62 +280,60 @@ GO
 -- Transaction Handling
 ---------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS sp_InsertEmployeesBatch;
+DROP PROCEDURE IF EXISTS sp_InsertBooksBatch;
 GO
 
-CREATE PROCEDURE sp_InsertEmployeesBatch
+CREATE PROCEDURE sp_InsertBooksBatch
 AS
 BEGIN
 
-BEGIN TRY
+    BEGIN TRY
 
-    BEGIN TRANSACTION;
+        BEGIN TRANSACTION;
 
-    INSERT INTO Employees
-    VALUES
-    (
-        203,
-        'Ravi',
-        'Patel',
-        'ravi@gmail.com',
-        48000,
-        1
-    );
+        INSERT INTO Books
+        VALUES
+        (
+            107,
+            'AI Basics',
+            1,
+            'Technology',
+            700
+        );
 
-    INSERT INTO Employees
-    VALUES
-    (
-        204,
-        'Priya',
-        'Singh',
-        'ravi@gmail.com',
-        50000,
-        2
-    );
+        INSERT INTO Books
+        VALUES
+        (
+            108,
+            'Machine Learning',
+            2,
+            'Technology',
+            900
+        );
 
-    COMMIT TRANSACTION;
+        COMMIT TRANSACTION;
 
-END TRY
+    END TRY
 
-BEGIN CATCH
+    BEGIN CATCH
 
-    ROLLBACK TRANSACTION;
+        ROLLBACK TRANSACTION;
 
-    INSERT INTO AuditLog
-    VALUES
-    (
-        'Batch Insert',
-        ERROR_MESSAGE()
-    );
+        INSERT INTO AuditLog(Action, ErrorMessage)
+        VALUES
+        (
+            'Batch Insert',
+            ERROR_MESSAGE()
+        );
 
-    PRINT 'Transaction rolled back.';
+        PRINT 'Transaction Rolled Back';
 
-END CATCH
+    END CATCH
 
 END;
 GO
 
-EXEC sp_InsertEmployeesBatch;
+EXEC sp_InsertBooksBatch;
 GO
 
 ---------------------------------------------------------
@@ -348,89 +341,80 @@ GO
 -- Severity Levels
 ---------------------------------------------------------
 
-ALTER PROCEDURE sp_AddNewEmployee
+ALTER PROCEDURE sp_AddNewBook
 (
-    @EmployeeID INT,
-    @FirstName VARCHAR(50),
-    @LastName VARCHAR(50),
-    @Email VARCHAR(100),
-    @Salary DECIMAL(10,2),
-    @DepartmentID INT
+    @BookID INT,
+    @BookTitle VARCHAR(100),
+    @AuthorID INT,
+    @Category VARCHAR(50),
+    @Price DECIMAL(10,2)
 )
 AS
 BEGIN
 
-IF @Salary < 0
-BEGIN
+    IF @Price < 0
+    BEGIN
+        RAISERROR
+        (
+            'Negative price is not allowed.',
+            16,
+            1
+        );
+        RETURN;
+    END
 
-    RAISERROR
-    (
-        'Salary cannot be negative.',
-        16,
-        1
-    );
+    IF @Price < 100
+    BEGIN
+        RAISERROR
+        (
+            'Book price is very low.',
+            10,
+            1
+        );
+    END
 
-    RETURN;
+    BEGIN TRY
 
-END
+        INSERT INTO Books
+        VALUES
+        (
+            @BookID,
+            @BookTitle,
+            @AuthorID,
+            @Category,
+            @Price
+        );
 
-IF @Salary < 1000
-BEGIN
+    END TRY
 
-    RAISERROR
-    (
-        'Entered salary is very low.',
-        10,
-        1
-    );
+    BEGIN CATCH
 
-END
+        INSERT INTO AuditLog(Action, ErrorMessage)
+        VALUES
+        (
+            'Severity Test',
+            ERROR_MESSAGE()
+        );
 
-BEGIN TRY
-
-    INSERT INTO Employees
-    VALUES
-    (
-        @EmployeeID,
-        @FirstName,
-        @LastName,
-        @Email,
-        @Salary,
-        @DepartmentID
-    );
-
-END TRY
-
-BEGIN CATCH
-
-    INSERT INTO AuditLog
-    VALUES
-    (
-        'Severity Example',
-        ERROR_MESSAGE()
-    );
-
-END CATCH
+    END CATCH
 
 END;
 GO
 
-EXEC sp_AddNewEmployee
-205,
-'Test',
-'User',
-'test@gmail.com',
-800,
-1;
+EXEC sp_AddNewBook
+109,
+'Cheap Book',
+1,
+'Programming',
+50;
 GO
 
-EXEC sp_AddNewEmployee
-206,
-'Demo',
-'User',
-'demo@gmail.com',
--200,
-1;
+EXEC sp_AddNewBook
+110,
+'Invalid Book',
+1,
+'Programming',
+-200;
 GO
 
 ---------------------------------------------------------
