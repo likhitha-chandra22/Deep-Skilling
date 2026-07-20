@@ -1,0 +1,15 @@
+=====================================
+ Library Management System - EF Core 8
+=====================================
+
+All Books:
+1 - The Alchemist - Paulo Coelho - ₹350
+2 - Clean Code - Robert Martin - ₹550
+
+
+FindAsync Result:
+The Alchemist - Paulo Coelho - ₹350
+
+
+FirstOrDefault Result:
+The Alchemist - Paulo Coelho - ₹350

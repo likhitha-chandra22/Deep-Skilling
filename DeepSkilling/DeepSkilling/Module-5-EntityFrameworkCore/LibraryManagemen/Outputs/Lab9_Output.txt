@@ -1,0 +1,22 @@
+=====================================
+ Lab 9 - Seed Data
+=====================================
+
+Build succeeded.
+
+Seed data configured successfully.
+
+Migration Created:
+SeedInitialBooks
+
+Database Updated Successfully.
+
+Seeded Categories:
+- Programming
+- Fiction
+
+Seeded Books:
+- Clean Code
+- The Alchemist
+
+Lab 9 Completed Successfully.

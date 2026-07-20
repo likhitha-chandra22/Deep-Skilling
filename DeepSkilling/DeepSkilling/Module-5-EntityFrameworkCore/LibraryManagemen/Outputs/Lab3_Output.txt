@@ -1,0 +1,12 @@
+Build started...
+Build succeeded.
+
+Migration: InitialCreate created successfully.
+
+Database: LibraryManagementDB created successfully.
+
+Tables Created:
+- Authors
+- Books
+- Members
+- Borrows

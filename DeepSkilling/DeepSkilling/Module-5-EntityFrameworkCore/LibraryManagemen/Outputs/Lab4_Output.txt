@@ -1,0 +1,18 @@
+=====================================
+ Library Management System - EF Core 8
+=====================================
+
+Authors inserted successfully.
+Books inserted successfully.
+
+Records Added:
+
+Authors
+-------
+1. Chetan Bhagat
+2. Paulo Coelho
+
+Books
+-----
+1. Five Point Someone  ₹350
+2. The Alchemist       ₹550

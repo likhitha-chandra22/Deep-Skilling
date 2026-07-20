@@ -1,0 +1,16 @@
+=====================================
+ Lab 13 - Performance Optimization
+=====================================
+
+Books fetched using AsNoTracking()
+
+Clean Code - ₹550
+The Alchemist - ₹350
+
+Advantages
+
+- Faster read operations
+- Lower memory usage
+- Suitable for read-only queries
+
+Lab 13 Completed Successfully.

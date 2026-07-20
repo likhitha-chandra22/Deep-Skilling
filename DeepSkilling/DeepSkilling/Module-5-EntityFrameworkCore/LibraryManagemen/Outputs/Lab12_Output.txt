@@ -1,0 +1,11 @@
+=====================================
+ Lab 12 - Circular References
+=====================================
+
+Clean Code --> Programming
+
+The Alchemist --> Fiction
+
+Circular reference avoided using DTO Projection.
+
+Lab 12 Completed Successfully.

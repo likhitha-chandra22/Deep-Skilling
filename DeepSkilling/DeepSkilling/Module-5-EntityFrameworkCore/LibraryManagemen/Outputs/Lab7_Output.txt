@@ -1,0 +1,14 @@
+=====================================
+ Lab 7 - LINQ Queries
+=====================================
+
+Books Price > ₹1000 (Descending)
+
+Advanced C# Programming - ₹2500
+Clean Architecture - ₹1800
+
+
+Projected DTO Objects
+
+The Alchemist - ₹350
+Clean Code - ₹550

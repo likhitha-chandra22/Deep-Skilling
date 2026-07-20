@@ -1,0 +1,24 @@
+=====================================
+ Lab 10 - Data Loading
+=====================================
+
+Eager Loading
+
+Clean Code - Programming
+The Alchemist - Fiction
+
+-------------------------------------
+
+Explicit Loading
+
+Category : Programming
+
+Clean Code
+
+-------------------------------------
+
+Lazy Loading
+
+Requires Proxy package and virtual navigation properties.
+
+Lab 10 Completed Successfully.

@@ -1,0 +1,19 @@
+=====================================
+ Lab 8 - Schema Changes
+=====================================
+
+Build succeeded.
+
+Migration Created Successfully.
+
+Migration Name:
+AddAvailableCopies
+
+Database Updated Successfully.
+
+Schema Updated Successfully.
+
+New Column Added:
+AvailableCopies (INT)
+
+Lab 8 Completed Successfully.

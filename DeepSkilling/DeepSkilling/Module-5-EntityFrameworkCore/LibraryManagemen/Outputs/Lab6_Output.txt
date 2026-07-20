@@ -1,0 +1,18 @@
+=====================================
+ Library Management System - EF Core 8
+=====================================
+
+Book updated successfully.
+
+Updated Book
+
+The Alchemist
+Price : ₹450
+
+-------------------------------------
+
+Book deleted successfully.
+
+Deleted Book
+
+Clean Code
