@@ -1,0 +1,24 @@
+@LibraryJwtMicroservice_HostAddress = http://localhost:5284
+
+### Generate JWT Token
+POST {{LibraryJwtMicroservice_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "librarian",
+  "password": "admin123"
+}
+
+###
+
+### Access Secure API
+GET {{LibraryJwtMicroservice_HostAddress}}/api/secure
+Authorization: Bearer <Paste_Your_JWT_Token_Here>
+
+###
+
+### Access Admin API
+GET {{LibraryJwtMicroservice_HostAddress}}/api/admin
+Authorization: Bearer <Paste_Your_JWT_Token_Here>
+
+###

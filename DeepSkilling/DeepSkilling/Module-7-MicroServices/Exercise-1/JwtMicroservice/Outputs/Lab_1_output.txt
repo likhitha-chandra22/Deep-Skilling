@@ -1,0 +1,39 @@
+=====================================
+Module 7 - Exercise 1
+=====================================
+
+Library JWT Authentication Project Created
+
+ASP.NET Core Web API Created
+
+JWT Package Installed
+
+Project Build Successful
+
+Exercise 1 - Part 1 Completed Successfully
+
+-------------------------------------
+
+JWT Configuration Added
+
+LoginModel Created
+
+User Model Created
+
+Authentication Middleware Enabled
+
+Exercise 1 - Part 2 Completed Successfully
+
+-------------------------------------
+
+Library Login Endpoint Created Successfully
+
+JWT Token Generated Successfully
+
+Library User Authentication Successful
+
+Exercise 1 - Part 3 Completed Successfully
+
+
+
+
