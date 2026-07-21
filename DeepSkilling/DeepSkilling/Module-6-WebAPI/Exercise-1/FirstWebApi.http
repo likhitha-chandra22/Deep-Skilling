@@ -1,0 +1,53 @@
+@LibraryManagementApi_HostAddress = http://localhost:5183
+
+### Get All Books
+GET {{LibraryManagementApi_HostAddress}}/api/books
+Accept: application/json
+
+###
+
+### Get Book By Id
+GET {{LibraryManagementApi_HostAddress}}/api/books/1
+Accept: application/json
+
+###
+
+### Add Book
+POST {{LibraryManagementApi_HostAddress}}/api/books
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "price": 550,
+  "availableCopies": 10,
+  "categoryId": 1,
+  "authorId": 1
+}
+
+###
+
+### Update Book
+PUT {{LibraryManagementApi_HostAddress}}/api/books/1
+Content-Type: application/json
+
+{
+  "bookId": 1,
+  "title": "Clean Code",
+  "price": 600,
+  "availableCopies": 8,
+  "categoryId": 1,
+  "authorId": 1
+}
+
+###
+
+### Delete Book
+DELETE {{LibraryManagementApi_HostAddress}}/api/books/1
+
+###
+
+### Generate JWT Token
+GET {{LibraryManagementApi_HostAddress}}/api/auth
+Accept: application/json
+
+###

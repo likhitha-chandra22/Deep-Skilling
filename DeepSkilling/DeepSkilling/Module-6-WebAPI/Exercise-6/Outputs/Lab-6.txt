@@ -1,0 +1,15 @@
+=====================================
+Module 6 - Exercise 6
+=====================================
+
+Kafka Producer Created Successfully
+
+Kafka Consumer Created Successfully
+
+Library Topic Configured
+
+Library notifications can be published to Kafka.
+
+Consumer subscribes to the library-topic.
+
+Exercise 6 Completed Successfully.

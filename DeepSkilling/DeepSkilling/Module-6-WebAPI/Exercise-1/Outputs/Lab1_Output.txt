@@ -1,0 +1,27 @@
+====================================
+ Module 6 - Exercise 1
+====================================
+
+Project Created Successfully
+
+BooksController Created Successfully
+
+CategoriesController Created Successfully
+
+AuthController Created Successfully
+
+HTTP Methods Implemented
+
+GET
+
+POST
+
+PUT
+
+DELETE
+
+JWT Authentication Configured
+
+Swagger Executed Successfully
+
+Exercise 1 Completed Successfully
