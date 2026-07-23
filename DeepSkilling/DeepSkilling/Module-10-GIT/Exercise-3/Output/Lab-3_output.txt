@@ -1,0 +1,84 @@
+Module 10 - Exercise 3
+Branching and Merging
+
+1. Create a new branch
+
+> git branch GitNewBranch
+
+2. List all branches
+
+> git branch
+
+  GitNewBranch
+* master
+
+3. Switch to the new branch
+
+> git checkout GitNewBranch
+
+Switched to branch 'GitNewBranch'
+
+4. Create a new file
+
+> echo "This file is created in GitNewBranch" > branch.txt
+
+5. Commit the changes
+
+> git add .
+> git commit -m "Added branch.txt in GitNewBranch"
+
+[GitNewBranch 12c05ef] Added branch.txt in GitNewBranch
+1 file changed
+create mode 100644 branch.txt
+
+6. Check status
+
+> git status
+
+On branch GitNewBranch
+nothing to commit, working tree clean
+
+7. Switch back to master
+
+> git checkout master
+
+Switched to branch 'master'
+
+8. Compare master and branch
+
+> git diff master GitNewBranch
+
+Difference displayed for branch.txt.
+
+9. Merge the branch
+
+> git merge GitNewBranch
+
+Updating db8c3ff..12c05ef
+Fast-forward
+branch.txt | Bin 0 -> 78 bytes
+1 file changed, 0 insertions(+), 0 deletions(-)
+create mode 100644 branch.txt
+
+10. View commit history
+
+> git log --oneline --graph --decorate
+
+* 12c05ef (HEAD -> master, GitNewBranch) Added branch.txt in GitNewBranch
+* db8c3ff Initial commit
+
+11. Delete the branch
+
+> git branch -d GitNewBranch
+
+Deleted branch GitNewBranch (was 12c05ef).
+
+12. Verify status
+
+> git status
+
+On branch master
+nothing to commit, working tree clean
+
+Result:
+Successfully created a new branch, committed changes, merged the branch into master, viewed the commit graph, deleted the merged branch, and verified the repository status.
