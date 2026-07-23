@@ -1,0 +1,87 @@
+Module 10 - Exercise 4
+Merge Conflict Resolution
+
+1. Initialized a Git repository.
+
+> git init
+
+2. Created hello.xml and committed.
+
+> echo "<message>Hello World</message>" > hello.xml
+> git add .
+> git commit -m "Initial commit"
+
+3. Created and switched to GitWork branch.
+
+> git checkout -b GitWork
+
+4. Modified hello.xml in GitWork branch and committed.
+
+> git add .
+> git commit -m "Updated hello.xml in GitWork"
+
+5. Switched back to master.
+
+> git checkout master
+
+6. Modified hello.xml with different content and committed.
+
+> git add .
+> git commit -m "Updated hello.xml in master"
+
+7. Viewed commit history.
+
+> git log --oneline --graph --decorate --all
+
+8. Compared master and branch.
+
+> git diff master GitWork
+
+9. Attempted merge.
+
+> git merge GitWork
+
+Output:
+
+warning: Cannot merge binary files: hello.xml (HEAD vs. GitWork)
+Auto-merging hello.xml
+CONFLICT (content): Merge conflict in hello.xml
+Automatic merge failed; fix conflicts and then commit the result.
+
+10. Resolved the conflict manually.
+
+> git add hello.xml
+> git commit -m "Resolved merge conflict"
+
+11. Added backup file to .gitignore.
+
+> echo "Backup file" > backup.bak
+
+.gitignore
+
+*.bak
+
+12. Committed .gitignore.
+
+> git add .gitignore
+> git commit -m "Added backup file to gitignore"
+
+13. Listed branches.
+
+> git branch
+
+14. Deleted merged branch.
+
+> git branch -d GitWork
+
+15. Viewed commit history.
+
+> git log --oneline --graph --decorate
+
+16. Verified repository status.
+
+> git status
+
+Result:
+
+Successfully created a merge conflict, resolved it manually, updated .gitignore to ignore backup files, deleted the merged branch, and verified the repository status successfully.
